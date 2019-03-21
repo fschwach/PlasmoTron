@@ -564,7 +564,7 @@ def process_plate():
     return redirect(url_for('view_refreshed'))
   home()
   cur = db.execute(
-      'SELECT PlateRows,PlateCols,PlateClass FROM Plates INNER JOIN PlateClasses ON Plates.PlateClass= PlateClasses.PlateClassID WHERE PlateID= ?',
+      'SELECT PlateRows,PlateCols,PlateClass,Platename FROM Plates INNER JOIN PlateClasses ON Plates.PlateClass= PlateClasses.PlateClassID WHERE PlateID= ?',
       [request.form['plateid']])
 
   platestats = cur.fetchone()
@@ -604,6 +604,29 @@ def process_plate():
     fullVolume = 1000
   else:
     raise Exception('Undefined plate class?')
+
+  # !!! HACK ALERT !!!
+  # THis next block (re-)sets the volumes according to part of the name
+  # of the plate. This is an experimental feature that is only here 
+  # so we can experiment with different culture volumes and have a way
+  # of setting the volume for a plate that does not need a change to the
+  # database schema. If we want to keep the ability to let the user
+  # choose the culturre volume, then this needs to be made into a field in
+  # the Plates table. At that point we are going to need a mechanism for
+  # handling DB migrations
+  # Not re-setting the extraRemoval volume, because that should depend on the
+  # type of plate, which is already set at this point
+  # Also not re-setting aliquotvol although this might be a problem if a very small fullVolume
+  # would be used as this would then remove a large proportion of the culture volume.
+  # This might need to change
+  matchObj = re.search("_setvolume([0-9]+)$", platestats['PlateName'], re.I)
+  if matchObj:
+    fullVolume = int(matchObj.group(1))
+    if fullVolume > 1000:
+      raise Exception('found special string _setvolume in plate name but attempt to set volume failed because ',fullVolume,' is >1000ul')
+    feedVolume = fullVolume *0.9
+    resuspvol = fullVolume * 0.8
+
   cur = db.execute(
       'select * FROM Cultures INNER JOIN PlatePositions ON Cultures.CultureID = PlatePositions.CultureID INNER JOIN Plates ON PlatePositions.PlateID=Plates.PlateID  WHERE Plates.PlateID=? AND (PlatePositions.Status IS NULL OR PlatePositions.Status != 10) ORDER BY Column, Row',
       [request.form['plateid']])
