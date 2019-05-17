@@ -140,7 +140,7 @@ def main(stdscr):
         stdscr.addstr("M - move to the currently saved position\n\n")
         stdscr.addstr("Numbers 1-8 - choose how far to move\n")
         stdscr.addstr("Arrow keys - move forwards/back/left/right\n")
-        stdscr.addstr("Control + arrow keys - move up/down\n\n")
+        stdscr.addstr("Control + arrow keys or w and s keys - move up/down\n\n")
         stdscr.addstr("V - switch to calibrate this pipettes plunger/volume\n\n")
         stdscr.addstr("Currently pipette: ")
         
@@ -186,9 +186,9 @@ def main(stdscr):
             movementAmount=  movementamounts[int(key)]  
         except ValueError:
             pass
-        if key == "kUP5":
+        if key == "kUP5" or key =="w":
                 position[2]=position[2]+movementAmount
-        if key == "kDN5":
+        if key == "kDN5" or key =="s":
                 position[2]=position[2]-movementAmount
         if key == "KEY_LEFT":
                 position[0]=position[0]-movementAmount
