@@ -1,8 +1,9 @@
 
-from opentrons import robot, containers, instruments
+from opentrons import robot, containers, instruments, util
 import sys
 import urllib.request
 import urllib.parse
+import re
 
 # some robots may need hacking the equipment.py file, so
 # check if a local one exists before importing the one
@@ -172,6 +173,44 @@ else:
             if command['Command']=="DropTip":
                 equipment[command['Pipette']].dispense(equipment['trash'],rate=2)
                 equipment[command['Pipette']].drop_tip()
+            
+            # adhoc calibration commands for small corections
+            # to the calibration in 0.1mm steps
+            # The axis/direction information is part 
+            # of the command string as this is the only place where
+            # such payload data can be aded at the moment
+            # The command does not move the robot head
+            matchObj = re.search("AdjustCalibration_(up|down|left|right|forward|back)", command['Command'])
+            if matchObj:
+                adjEquipment = equipment[command['Labware']]
+                well = adjEquipment[0]
+                pos = well.from_center(x=0, y=0, z=-1, reference=adjEquipment)
+                location = (adjEquipment, pos)
+                newX = pos["x"]
+                newY = pos["y"]
+                newZ = pos["z"]
+                if matchObj.group(1) == "up":
+                    newZ = newZ + 0.1
+                if matchObj.group(1) == "down":
+                    newZ = newZ - 0.1
+                if matchObj.group(1) == "left":
+                    newX = newX - 0.1
+                if matchObj.group(1) == "right":
+                    newX = newX + 0.1
+                if matchObj.group(1) == "forward":
+                    newY = newY - 0.1
+                if matchObj.group(1) == "back":
+                    newY = newY + 0.1
+                newPos = util.vector.Vector( newX, newY, newZ )
+                equipment[command['Pipette']].move_to( (adjEquipment, pos) )
+                equipment[command['Pipette']].move_to( (adjEquipment, newPos) )
+                equipment[command['Pipette']].calibrate_position( (adjEquipment, pos) )
+
+                # Don't move the head - we don't know where
+                # it is when the command is issued. The user should
+                # follow the adjusment with a suitable comand to
+                # check the effect, such an resuspension or
+                # pick up tip
 
             while 1:
                 try:

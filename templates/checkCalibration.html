@@ -19,7 +19,11 @@ $(document).ready(function(){
     },
     "CulturePlate" : {
       allowedActions : [ "Aspirate", "Dispense", "AirGap", 
-        "DispenseBottom","Resuspend","ResuspendDouble","Home" ],
+        "DispenseBottom","Resuspend","ResuspendDouble","Home",
+        "AdjustCalibration_up","AdjustCalibration_down",
+        "AdjustCalibration_left","AdjustCalibration_right",
+        "AdjustCalibration_forward","AdjustCalibration_back" 
+      ],
       maxRow : 4,
       maxCol : 6,
       selectedAction : 'Aspirate',
@@ -27,7 +31,11 @@ $(document).ready(function(){
     },
     "CulturePlate2" : {
       allowedActions : [ "Aspirate", "Dispense", "AirGap", 
-        "DispenseBottom","Resuspend","ResuspendDouble","Home" ],
+        "DispenseBottom","Resuspend","ResuspendDouble","Home",
+        "AdjustCalibration_up","AdjustCalibration_down",
+        "AdjustCalibration_left","AdjustCalibration_right",
+        "AdjustCalibration_forward","AdjustCalibration_back" 
+      ],
       maxRow : 4,
       maxCol : 6,
       selectedAction : 'Aspirate',
@@ -35,7 +43,11 @@ $(document).ready(function(){
     },
     "CulturePlate6well" : {
       allowedActions : [ "Aspirate", "Dispense", "AirGap", 
-        "DispenseBottom","Resuspend","ResuspendDouble","Home" ],
+        "DispenseBottom","Resuspend","ResuspendDouble","Home",
+        "AdjustCalibration_up","AdjustCalibration_down",
+        "AdjustCalibration_left","AdjustCalibration_right",
+        "AdjustCalibration_forward","AdjustCalibration_back" 
+      ],
       maxRow : 2,
       maxCol : 3,
       selectedAction : 'Aspirate',
@@ -43,14 +55,22 @@ $(document).ready(function(){
     },
     "AliquotPlate" : {
       allowedActions : [ "Aspirate", "Dispense", "AirGap", 
-        "DispenseBottom","Resuspend","ResuspendDouble","Home" ],
+        "DispenseBottom","Resuspend","ResuspendDouble","Home",
+        "AdjustCalibration_up","AdjustCalibration_down",
+        "AdjustCalibration_left","AdjustCalibration_right",
+        "AdjustCalibration_forward","AdjustCalibration_back" 
+      ],
       maxRow : 8,
       maxCol : 12,
       selectedAction : 'Dispense',
       disabledInputs : [],
     },
     "p1000rack" : {
-      allowedActions : [ "GetTips", "Home" ], 
+      allowedActions : [ "GetTips", "Home",
+        "AdjustCalibration_up","AdjustCalibration_down",
+        "AdjustCalibration_left","AdjustCalibration_right",
+        "AdjustCalibration_forward","AdjustCalibration_back" 
+      ], 
       maxRow : 8,
       maxCol : 12,
       selectedAction : 'GetTips',
@@ -63,19 +83,31 @@ $(document).ready(function(){
     },
     "TubBlood" : {
       allowedActions : [ "Aspirate", "Dispense", "AirGap", 
-        "ResuspendReservoir","Home" ],
+        "ResuspendReservoir","Home",
+        "AdjustCalibration_up","AdjustCalibration_down",
+        "AdjustCalibration_left","AdjustCalibration_right",
+        "AdjustCalibration_forward","AdjustCalibration_back" 
+      ],
       selectedAction : 'Aspirate',
       disabledInputs : [ "useRow", "useCol" ],
     },
     "TubSybr" : {
       allowedActions : [ "Aspirate", "Dispense", "AirGap", 
-        "ResuspendReservoir","Home" ],
+        "ResuspendReservoir","Home",
+        "AdjustCalibration_up","AdjustCalibration_down",
+        "AdjustCalibration_left","AdjustCalibration_right",
+        "AdjustCalibration_forward","AdjustCalibration_back" 
+      ],
       selectedAction : 'Aspirate',
       disabledInputs : [ "useRow", "useCol" ],
     },
     "TubMedia" : {
       allowedActions : [ "Aspirate", "Dispense", "AirGap", 
-        "ResuspendReservoir","Home" ],
+        "ResuspendReservoir","Home",
+        "AdjustCalibration_up","AdjustCalibration_down",
+        "AdjustCalibration_left","AdjustCalibration_right",
+        "AdjustCalibration_forward","AdjustCalibration_back" 
+      ],
       selectedAction : 'Aspirate',
       disabledInputs : [ "useRow", "useCol" ],
     }
@@ -215,6 +247,12 @@ function selectAllow( selectFieldId, allowOptions ){
       <option value="ResuspendDouble">ResuspendDouble</option>
       <option value="ResuspendReservoir">ResuspendReservoir</option>
       <option value="InitaliseLabware">InitaliseLabware</option>
+      <option value="AdjustCalibration_up">AdjustCalibration_up</option>
+      <option value="AdjustCalibration_down">AdjustCalibration_down</option>
+      <option value="AdjustCalibration_left">AdjustCalibration_left</option>
+      <option value="AdjustCalibration_right">AdjustCalibration_right</option>
+      <option value="AdjustCalibration_forward">AdjustCalibration_forward</option>
+      <option value="AdjustCalibration_back">AdjustCalibration_back</option>
     </select>
   </p>
 
